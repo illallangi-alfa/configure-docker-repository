@@ -9,12 +9,13 @@ configure_docker_repository:
         repo_gpgcheck: "yes"
         gpgkey:
           - key: "https://download.docker.com/linux/centos/gpg"
-            fingerprint: "060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35"
+            fingerprint: "060A61C51B558A7F742B77AAC52FEB6B621E9F35"
   raspbian: &raspbian
     apt_repository: #  Add Docker apt repository.
       - repo: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
         gpgkey:
           - key: "https://download.docker.com/linux/debian/gpg"
+            fingerprint: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
   debian_armv7l: *raspbian
   debian_armv6l: *raspbian
   redhat_x86_64: *centos
