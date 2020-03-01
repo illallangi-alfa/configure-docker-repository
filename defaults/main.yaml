@@ -1,5 +1,4 @@
 ---
-docker_repository: true
 configure_docker_repository:
   centos: &centos
     yum_repository:
@@ -17,5 +16,4 @@ configure_docker_repository:
           - key: "https://download.docker.com/linux/debian/gpg"
             fingerprint: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
   debian_armv7l: *raspbian
-  debian_armv6l: *raspbian
   redhat_x86_64: *centos

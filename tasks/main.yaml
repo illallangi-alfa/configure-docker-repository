@@ -1,19 +1,10 @@
 ---
-- name: "Fail if OS/Architecture is not supported"
-  fail:
-    msg: "Configuring docker-repository on {{ (ansible_os_family | lower) + '_' + (ansible_architecture | lower) }} is unsupported."
-  when:
-    - "(configure_docker_repository | default({}))[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)] is not defined"
-    - "docker_repository is defined"
-  tags:
-    - "docker-repository"
 - name: "Add GPG key(s) to apt"
   apt_key:
     url: "{{ item.key }}"
     state: present
   with_items: "{{ configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)] | json_query('apt_repository[].gpgkey[]') }}"
   when:
-    - "docker_repository is defined"
     - "configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)] | json_query('apt_repository[].gpgkey[]') is not none"
   tags:
     - "docker-repository"
@@ -24,7 +15,6 @@
     state: present
   with_items: "{{ configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)] | json_query('yum_repository[].gpgkey[]') }}"
   when:
-    - "docker_repository is defined"
     - "configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)] | json_query('yum_repository[].gpgkey[]') is not none"
   tags:
     - "docker-repository"
@@ -33,8 +23,6 @@
     repo: "{{ item.repo }}"
     state: "present"
   with_items: "{{ configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)].apt_repository | default([]) }}"
-  when:
-    - "docker_repository is defined"
   tags:
     - "docker-repository"
 - name: "Add yum repository(s)"
@@ -45,7 +33,5 @@
     repo_gpgcheck: "{{ item.repo_gpgcheck }}"
     gpgkey: "{{ item.gpgkey[0].key }}"
   with_items: "{{ configure_docker_repository[(ansible_os_family | lower) + '_' + (ansible_architecture | lower)].yum_repository | default([]) }}"
-  when:
-    - "docker_repository is defined"
   tags:
     - "docker-repository"
