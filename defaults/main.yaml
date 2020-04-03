@@ -1,19 +1,16 @@
 ---
 configure_docker_repository:
-  centos: &centos
-    yum_repository:
-      - name: "docker-ce-stable"
-        description: "Docker CE Stable - $basearch"
-        baseurl: "https://download.docker.com/linux/centos/7/$basearch/stable"
-        repo_gpgcheck: "yes"
-        gpgkey:
-          - key: "https://download.docker.com/linux/centos/gpg"
-            fingerprint: "060A61C51B558A7F742B77AAC52FEB6B621E9F35"
-  raspbian: &raspbian
-    apt_repository: #  Add Docker apt repository.
-      - repo: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
+  debian: &debian
+    apt_repository:
+      - repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
         gpgkey:
           - key: "https://download.docker.com/linux/debian/gpg"
             fingerprint: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+  raspbian: &raspbian
+    apt_repository:
+      - repo: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
+        gpgkey:
+          - key: "https://download.docker.com/linux/raspbian/gpg"
+            fingerprint: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
   debian_armv7l: *raspbian
-  redhat_x86_64: *centos
+  debian_x86_64: *debian
